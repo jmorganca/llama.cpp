@@ -324,9 +324,14 @@ struct mtmd_context {
                 } break;
             case PROJECTOR_TYPE_LLAMA4:
                 {
-                    // (more details in mtmd_context constructor)
-                    img_beg = "<|image_start|>";
-                    img_end = "<|image_end|>";
+                    img_beg           = "<|image_start|>";
+                    img_end           = "<|image_end|>";
+                    slice_tmpl        = MTMD_SLICE_TMPL_LLAMA4;
+                    tok_ov_img_start  = {lookup_token("<|image|>")};
+                    tok_sli_img_mid   = {lookup_token("<|tile_x_separator|>")};
+                    tok_row_end       = {lookup_token("<|tile_y_separator|>")};
+                    tok_row_end_trail = true;
+                    ov_img_first      = false;
                     LOG_WRN("%s: llama 4 vision is known to have degraded quality:\n"
                             "    https://github.com/ggml-org/llama.cpp/pull/13282\n", __func__);
                     image_preproc = std::make_unique<mtmd_image_preprocessor_llava_uhd>(ctx_v);
